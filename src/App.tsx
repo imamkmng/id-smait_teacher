@@ -13,7 +13,15 @@ export default function App() {
   const [logo, setLogo] = useState<string | null>(null);
   const [signature, setSignature] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [generatedEmail, setGeneratedEmail] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const generateEmail = () => {
+    if (idNumber) {
+      const cleanId = idNumber.replace(/\s+/g, '').toLowerCase();
+      setGeneratedEmail(`${cleanId}@masalfalah.sch.id`);
+    }
+  };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -120,9 +128,11 @@ export default function App() {
         </header>
 
         <div className="flex flex-col lg:flex-row gap-12 items-start justify-center">
-          {/* Form Section */}
-          <div className="w-full lg:w-1/3 bg-white p-6 rounded-xl shadow-md">
-            <div className="flex justify-between items-center mb-6 border-b pb-2">
+          {/* Left Column: Form & Email Generator */}
+          <div className="w-full lg:w-1/3 flex flex-col gap-6">
+            {/* Form Section */}
+            <div className="bg-white p-6 rounded-xl shadow-md">
+              <div className="flex justify-between items-center mb-6 border-b pb-2">
               <h2 className="text-xl font-semibold">Card Details</h2>
               <button
                 onClick={generateRandom}
@@ -275,6 +285,38 @@ export default function App() {
                   <FileDown size={18} />
                   {isDownloading ? 'Processing...' : 'Download Compressed (Small PNG)'}
                 </button>
+              </div>
+            </div>
+            </div>
+
+            {/* Email Generator Section */}
+            <div className="bg-white p-6 rounded-xl shadow-md">
+              <h2 className="text-xl font-semibold mb-4 border-b pb-2">Email Generator</h2>
+              <div className="space-y-4">
+                <p className="text-sm text-gray-600">Generate official school email based on the ID Number.</p>
+                <button
+                  onClick={generateEmail}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors"
+                >
+                  Generate Email
+                </button>
+                {generatedEmail && (
+                  <div className="p-4 bg-gray-50 border border-gray-200 rounded-md">
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Generated Email</label>
+                    <div className="flex items-center justify-between">
+                      <span className="text-lg font-mono text-gray-800 break-all">{generatedEmail}</span>
+                      <button 
+                        onClick={() => {
+                          navigator.clipboard.writeText(generatedEmail);
+                          alert('Email copied to clipboard!');
+                        }}
+                        className="text-sm text-blue-600 hover:text-blue-800 ml-2 shrink-0"
+                      >
+                        Copy
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
