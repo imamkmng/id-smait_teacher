@@ -4,8 +4,8 @@ import { Upload, Download, Image as ImageIcon, Shuffle, FileDown } from 'lucide-
 
 export default function App() {
   const [name, setName] = useState('IMAM ROHMAN, S.KOM');
-  const [role, setRole] = useState('TENAGA PENDIDIK');
-  const [idLabel, setIdLabel] = useState('NIP / NUPTK');
+  const [role, setRole] = useState('TEACHER');
+  const [idLabel, setIdLabel] = useState('EMPLOYEE ID (NUPTK)');
   const [idNumber, setIdNumber] = useState('0067829104325678');
   const [validUntil, setValidUntil] = useState('31 DESEMBER 2026');
   const [academicYear, setAcademicYear] = useState('2023/2024');
@@ -18,8 +18,9 @@ export default function App() {
 
   const generateEmail = () => {
     if (idNumber) {
-      const cleanId = idNumber.replace(/\s+/g, '').toLowerCase();
-      setGeneratedEmail(`${cleanId}@masalfalah.sch.id`);
+      const cleanId = idNumber.replace(/\D/g, '');
+      const suffix = cleanId.slice(-7).padStart(7, '0');
+      setGeneratedEmail(`2026${suffix}@masalfalah.sch.id`);
     }
   };
 
@@ -83,8 +84,8 @@ export default function App() {
 
   const generateRandom = async () => {
     const names = ["BUDI SANTOSO, S.PD", "SITI AMINAH, M.PD", "AHMAD FAUZI, S.KOM", "NURUL HIDAYAH, S.E", "EKO PRASETYO, S.T", "LINA MARLINA, S.AG", "HENDRA WIJAYA, M.TI"];
-    const roles = ["TENAGA PENDIDIK", "STAF TATA USAHA", "KEPALA SEKOLAH", "WAKIL KEPALA SEKOLAH", "GURU BIMBINGAN KONSELING", "PUSTAKAWAN"];
-    const labels = ["NIP / NUPTK", "NIG", "NIK", "NIP"];
+    const roles = ["TEACHER"];
+    const labels = ["EMPLOYEE ID (NUPTK)", "NUPTK", "ID NUMBER", "ID TEACHER"];
 
     setName(names[Math.floor(Math.random() * names.length)]);
     setRole(roles[Math.floor(Math.random() * roles.length)]);
@@ -101,7 +102,7 @@ export default function App() {
     const randomYear = 2025 + Math.floor(Math.random() * 5);
     setValidUntil(`${randomDay} ${months[Math.floor(Math.random() * months.length)]} ${randomYear}`);
 
-    const academicYears = ["2023/2024", "2024/2025", "2025/2026", "2026/2027"];
+    const academicYears = ["2023/2024", "2024/2025", "2025/2026", "2026/2027", "2027/2028"];
     setAcademicYear(academicYears[Math.floor(Math.random() * academicYears.length)]);
 
     try {
@@ -157,25 +158,28 @@ export default function App() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Role / Title</label>
-                <input
-                  type="text"
+                <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors uppercase"
-                  placeholder="e.g. TENAGA PENDIDIK"
-                />
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors uppercase bg-white"
+                >
+                  <option value="TEACHER">TEACHER</option>
+                </select>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">ID Label</label>
-                  <input
-                    type="text"
+                  <select
                     value={idLabel}
                     onChange={(e) => setIdLabel(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors uppercase"
-                    placeholder="e.g. NIP / NUPTK"
-                  />
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors uppercase bg-white"
+                  >
+                    <option value="EMPLOYEE ID (NUPTK)">EMPLOYEE ID (NUPTK)</option>
+                    <option value="NUPTK">NUPTK</option>
+                    <option value="ID NUMBER">ID NUMBER</option>
+                    <option value="ID TEACHER">ID TEACHER</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">ID Number</label>
@@ -184,7 +188,7 @@ export default function App() {
                     value={idNumber}
                     onChange={(e) => setIdNumber(e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
-                    placeholder="e.g. 1234567890"
+                    placeholder="e.g. 1234567890123456"
                   />
                 </div>
               </div>
@@ -192,13 +196,17 @@ export default function App() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Tahun Ajaran</label>
-                  <input
-                    type="text"
+                  <select
                     value={academicYear}
                     onChange={(e) => setAcademicYear(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors uppercase"
-                    placeholder="e.g. 2023/2024"
-                  />
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors uppercase bg-white"
+                  >
+                    <option value="2023/2024">2023/2024</option>
+                    <option value="2024/2025">2024/2025</option>
+                    <option value="2025/2026">2025/2026</option>
+                    <option value="2026/2027">2026/2027</option>
+                    <option value="2027/2028">2027/2028</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Masa Berlaku / Kontrak</label>
@@ -400,6 +408,9 @@ export default function App() {
                   </div>
                   <div className="text-[#1f2937] text-[20px] font-extrabold mt-1 tracking-wide">
                     {idNumber || '0000000000000000'}
+                  </div>
+                  <div className="text-[#1a7c3b] text-[11px] font-bold mt-0.5 tracking-wider lowercase">
+                    {idNumber ? `2026${idNumber.replace(/\D/g, '').slice(-7).padStart(7, '0')}@masalfalah.sch.id` : 'email@masalfalah.sch.id'}
                   </div>
                   
                   {/* Signature Area */}
